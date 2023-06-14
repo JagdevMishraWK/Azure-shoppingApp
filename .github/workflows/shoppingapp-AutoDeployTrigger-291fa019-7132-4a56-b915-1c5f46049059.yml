@@ -1,36 +1,18 @@
-name: Run Azure Login with OIDC
+# File: .github/workflows/workflow.yml
+
 on: [push]
 
-permissions:
-      id-token: write
-      contents: read
-      
+name: AzureLoginSample
+
 jobs:
+
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout to the branch
-        uses: actions/checkout@v2
-
-      - name: Azure CLI Login
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Build and push container image to registry
-        uses: azure/container-apps-deploy-action@v1
-        with:
-          appSourcePath: ${{ github.workspace }} 
-          registryUrl: shoppingappacreg.azurecr.io
-          registryUsername: ${{ secrets.SHOPPINGAPP_REGISTRY_USERNAME }}
-          registryPassword: ${{ secrets.SHOPPINGAPP_REGISTRY_PASSWORD }}
-          containerAppName: shoppingapp
-          resourceGroup: jdev-rg
-          imageToBuild: shoppingappacreg.azurecr.io/shoppingapp:${{ github.sha }}
-          dockerfilePath: Dockerfile
-
-     
-
+    
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - run: |
+        az webapp list --query "[?state=='Running']"
