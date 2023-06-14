@@ -1,8 +1,11 @@
 # File: .github/workflows/workflow.yml
 
+name: Run Azure Login with OIDC
 on: [push]
 
-name: AzureLoginSample
+permissions:
+      id-token: write
+      contents: read
 
 jobs:
 
