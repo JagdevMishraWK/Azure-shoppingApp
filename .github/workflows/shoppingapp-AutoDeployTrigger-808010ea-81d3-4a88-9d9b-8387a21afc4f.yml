@@ -30,6 +30,7 @@ jobs:
           resourceGroup: jdev-rg
           imageToBuild: shoppingappacreg.azurecr.io/shoppingapp:${{ github.sha }}
           dockerfilePath: Dockerfile
+          allow-no-subscriptions: true
 
      
 
