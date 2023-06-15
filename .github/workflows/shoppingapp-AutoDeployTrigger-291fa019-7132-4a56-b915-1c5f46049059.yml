@@ -1,4 +1,4 @@
-# File: .github/workflows/workflow.yml
+# File: .github/workflows/OIDC_workflow.yml
 
 name: Run Azure Login with OIDC
 on: [push]
@@ -6,16 +6,21 @@ on: [push]
 permissions:
       id-token: write
       contents: read
-
-jobs:
-
+jobs: 
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    
-    - uses: azure/login@v1
-      with:
-         creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-    
-    - run: |
-        az webapp list --query "[?state=='Running']"
+      - name: Az CLI login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+            az group list
