@@ -17,7 +17,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SHOPPINGAPP_AZURE_CREDENTIALS }}
-          allow-no-subscriptions: true
+          #allow-no-subscriptions: true
 
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v1
