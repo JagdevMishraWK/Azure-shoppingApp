@@ -1,17 +1,9 @@
-name: Trigger auto deployment for shoppingapp
+name: Run Azure Login with OIDC
+on: [push]
 
-# When this action will be executed
-on:
-  # Automatically trigger it when detected changes in repo
-  push:
-    branches: 
-      [ main ]
-    paths:
-    - '/Docker/**'
-    - '.github/workflows/shoppingapp-AutoDeployTrigger-808010ea-81d3-4a88-9d9b-8387a21afc4f.yml'
-
-  # Allow mannually trigger 
-  workflow_dispatch:
+permissions:
+      id-token: write
+      contents: read
       
 jobs:
   build-and-deploy:
