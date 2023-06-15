@@ -1,9 +1,17 @@
-name: Run Azure Login with OIDC
-on: [push]
+name: Trigger auto deployment for shoppingapp
 
-permissions:
-      id-token: write
-      contents: read
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '/Docker/**'
+    - '.github/workflows/shoppingapp-AutoDeployTrigger-808010ea-81d3-4a88-9d9b-8387a21afc4f.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
       
 jobs:
   build-and-deploy:
@@ -15,26 +23,20 @@ jobs:
 
       - name: Azure Login
         uses: azure/login@v1
-        #uses: azure/actions/login@master
         with:
-          #creds: ${{ secrets.SHOPPINGAPP_AZURE_CREDENTIALS }}
-          #allow-no-subscriptions: true
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: ${{ secrets.SHOPPINGAPP_AZURE_CREDENTIALS }}
 
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v1
         with:
+          appSourcePath: ${{ github.workspace }}/Docker 
+          registryUrl: shoppingappacreg.azurecr.io
+          registryUsername: ${{ secrets.SHOPPINGAPP_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.SHOPPINGAPP_REGISTRY_PASSWORD }}
           containerAppName: shoppingapp
           resourceGroup: jdev-rg
-          appSourcePath: ${{ github.workspace }}
-          registryUrl: shoppingappacreg.azurecr.io
-          registryUsername: shoppingappacreg
-          registryPassword: ${{ secrets.SHOPPINGAPP_REGISTRY_PASSWORD }}
           imageToBuild: shoppingappacreg.azurecr.io/shoppingapp:${{ github.sha }}
           dockerfilePath: Dockerfile
-         
 
      
 
