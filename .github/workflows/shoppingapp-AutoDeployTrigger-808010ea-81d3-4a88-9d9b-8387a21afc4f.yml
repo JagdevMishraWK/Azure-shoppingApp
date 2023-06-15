@@ -24,7 +24,7 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}
           registryUrl: shoppingappacreg.azurecr.io
-          registryUsername: ${{ secrets.SHOPPINGAPP_REGISTRY_USERNAME }}
+          registryUsername: shoppingappacreg
           registryPassword: ${{ secrets.SHOPPINGAPP_REGISTRY_PASSWORD }}
           containerAppName: shoppingapp
           resourceGroup: jdev-rg
