@@ -14,7 +14,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Azure Login
-        uses: azure/login@v1
+        #uses: azure/login@v1
+        uses: azure/actions/login@master
         with:
           creds: ${{ secrets.SHOPPINGAPP_AZURE_CREDENTIALS }}
           #allow-no-subscriptions: true
