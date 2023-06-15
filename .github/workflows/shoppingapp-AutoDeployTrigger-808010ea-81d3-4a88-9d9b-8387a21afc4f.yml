@@ -22,13 +22,12 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v1
         with:
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          containerAppName: shoppingapp
+          resourceGroup: jdev-rg
           appSourcePath: ${{ github.workspace }}
           registryUrl: shoppingappacreg.azurecr.io
           registryUsername: shoppingappacreg
           registryPassword: ${{ secrets.SHOPPINGAPP_REGISTRY_PASSWORD }}
-          containerAppName: shoppingapp
-          resourceGroup: jdev-rg
           imageToBuild: shoppingappacreg.azurecr.io/shoppingapp:${{ github.sha }}
           dockerfilePath: Dockerfile
          
